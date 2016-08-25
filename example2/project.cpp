@@ -7,7 +7,7 @@ extern "C" {
 using namespace llvm;
 
 static cl::opt<std::string> FileName(cl::Positional, cl::desc("Input file"),
-													cl::Required);
+								cl::Required);
 
 int main(int argc, char **argv) {
 
@@ -18,8 +18,8 @@ int main(int argc, char **argv) {
 		"-I."
 	};
 	CXTranslationUnit translationUnit = clang_parseTranslationUnit (
-										index, FileName.c_str(), args, 
-										2, NULL, 0, CXTranslationUnit_None);
+					    index, FileName.c_str(), args, 
+					    2, NULL, 0, CXTranslationUnit_None);
 	unsigned diagnosticCount = clang_getNumDiagnostics(translationUnit);
 	for (unsigned i = 0; i < diagnosticCount; ++i) {
 		CXDiagnostic diagnostic = clang_getDiagnostic(translationUnit, i);
@@ -31,9 +31,9 @@ int main(int argc, char **argv) {
 		unsigned line = 0, col = 0;
 		clang_getPresumedLocation(loc, &fName, &line, &col);
 		std::cout << "Severity: " << severity 
-						<< "File: " << clang_getCString(fName) << " Line: " << line
-						<< " Col: " << col << " Category: \"" << clang_getCString(category) 
-						<< "\" Message: " << clang_getCString(message) << "\n";
+			    << "File: " << clang_getCString(fName) << " Line: " << line
+			    << " Col: " << col << " Category: \"" << clang_getCString(category) 
+			    << "\" Message: " << clang_getCString(message) << "\n";
 
 		clang_disposeString(fName);
 		clang_disposeString(message);
