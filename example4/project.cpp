@@ -11,14 +11,14 @@ FileName(cl::Positional, cl::desc("Input File"), cl::Required);
 
 enum CXChildVisitResult visitNode(CXCursor cursor, CXCursor parent, CXClientData client_data) {
 	if (clang_getCursorKind(cursor) == CXCursor_CXXMethod ||	
-									clang_getCursorKind(cursor) == CXCursor_FunctionDecl) {
+					clang_getCursorKind(cursor) == CXCursor_FunctionDecl) {
 		CXString name = clang_getCursorSpelling(cursor);
 		CXSourceLocation loc = clang_getCursorLocation(cursor);
 		CXString fName;
 		unsigned line = 0, col = 0;
 		clang_getPresumedLocation(loc, &fName, &line, &col);
 		std::cout << clang_getCString(fName) << ":" << line << ":" << col << " declares "
-											<< clang_getCString(name) << std::endl;
+						<< clang_getCString(name) << std::endl;
 		return CXChildVisit_Continue;
 	}
 	return CXChildVisit_Recurse;
@@ -33,7 +33,7 @@ int main (int argc, char **argv) {
 	};
 
 	CXTranslationUnit translationUnit = clang_parseTranslationUnit(index, FileName.c_str(), 
-													args, 2, NULL, 0, CXTranslationUnit_None);
+						args, 2, NULL, 0, CXTranslationUnit_None);
 	CXCursor cursor = clang_getTranslationUnitCursor(translationUnit);
 	clang_visitChildren(cursor, visitNode, NULL);
 	clang_disposeTranslationUnit(translationUnit);
