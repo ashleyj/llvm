@@ -4,7 +4,7 @@ ifndef VERBOSE
 QUIET:=@
 endif
 
-SRC_DIR?=/usr/local/opt/llvm/include/
+SRC_DIR?=/usr/local/opt/llvm/include/ -I/usr/local/llvm36/include/
 LDFLAGS+=$(shell $(LLVM_CONFIG) --ldflags)
 LDFLAGS+=$(shell $(LLVM_CONFIG) --system-libs) 
 COMMON_FLAGS=-Wall -Wextra

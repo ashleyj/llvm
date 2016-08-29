@@ -4,9 +4,15 @@ ifndef VERBOSE
 QUIET:=@
 endif
 
-SRC_DIR?=/usr/local/opt/llvm/include/
+SRC_DIR?=/usr/local/opt/llvm/include/ -I/usr/local/llvm36/include
 LDFLAGS+=$(shell $(LLVM_CONFIG) --ldflags)
-LDFLAGS+=$(shell $(LLVM_CONFIG) --system-libs)
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),FreeBSD)
+	LDFLAGS+=-lz -lpthread -ltinfo -lm -lLLVM-3.6
+else
+	LDFLAGS+=$(shell $(LLVM_CONFIG) --system-libs)
+endif
 COMMON_FLAGS=
 CXXFLAGS+=$(COMMON_FLAGS) $(shell $(LLVM_CONFIG) --cxxflags)
 CPPFLAGS+=$(shell $(LLVM_CONFIG) --cppflags) -I$(SRC_DIR) -fno-rtti
